@@ -7,7 +7,7 @@ use cosmic::iced::{
 use cosmic::iced_runtime::core::window;
 use cosmic::{Action, Element, Task};
 
-use cosmic::widget::{list_column, settings, text, toggler, button};
+use cosmic::widget::{list_column, settings, text, button};
 use std::time::Duration;
 
 const ID: &str = "com.example.BasicApplet";
@@ -16,7 +16,6 @@ const ID: &str = "com.example.BasicApplet";
 pub struct Window {
     core: Core,
     popup: Option<Id>,
-    is_enabled: bool,
     panel_text: String, // Field stores paper genmon output
 }
 
@@ -24,7 +23,6 @@ pub struct Window {
 pub enum Message {
     TogglePopup,
     PopupClosed(Id),
-    EnableDisable(bool),
     Tick,                // Changed by timer
     UpdateText(String),  // Called with result of paper genmon command
 }
@@ -46,7 +44,6 @@ impl cosmic::Application for Window {
     fn init(core: Core, _flags: Self::Flags) -> (Self, Task<Action<Self::Message>>) {
         let window = Window {
             core,
-            is_enabled: false,
             panel_text: String::from("Loading page count..."), // Initial text
             ..Default::default()
         };
@@ -116,29 +113,28 @@ impl cosmic::Application for Window {
                     self.popup = None;
                 }
             }
-            Message::EnableDisable(is_enabled) => self.is_enabled = is_enabled,
         }
         Task::none()
     }
 
-    fn view(&self) -> Element<Message> {
-        button::standard(&self.panel_text)
-            .on_press(Message::TogglePopup)
-            .padding([0, 12])
-            .into()
+    fn view(&self) -> Element<'_, Message> {
+        let content = text(&self.panel_text)
+            .width(cosmic::iced::Length::Shrink);
+
+        let button = button::custom(content)
+            .class(cosmic::theme::Button::AppletIcon)
+            .padding([0, 12]);
+
+        cosmic::widget::autosize::autosize(button, cosmic::widget::Id::unique()).into()
     }
 
-    fn view_window(&self, _id: Id) -> Element<Message> {
+    fn view_window(&self, _id: Id) -> Element<'_, Message> {
         let content_list = list_column()
             .padding(5)
             .spacing(0)
             .add(settings::item(
-                "Current Status",
+                "Quota Status",
                 text(&self.panel_text),
-            ))
-            .add(settings::item(
-                "Enable/Disable",
-                toggler(self.is_enabled).on_toggle(Message::EnableDisable),
             ));
 
         self.core.applet.popup_container(content_list).into()
