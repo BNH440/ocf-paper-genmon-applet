@@ -15,6 +15,11 @@
       devShells = forAllSystems (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
+          libPath = with pkgs; lib.makeLibraryPath [
+      	      libGL
+              libxkbcommon
+              wayland
+          ];
         in
         {
           default = pkgs.mkShell {
@@ -28,10 +33,13 @@
             ];
 
             buildInputs = with pkgs; [
+              libGL
               libxkbcommon
+              wayland
             ];
 
             RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+	    LD_LIBRARY_PATH = libPath;
 
             shellHook = ''
               export CARGO_HOME="$PWD/.cargo"
