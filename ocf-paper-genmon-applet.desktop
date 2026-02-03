@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=OCF Paper Quota Applet
 Type=Application
-Exec=nix develop /home/b/bl/blakeh/ocf-paper-genmon-applet --command /home/b/bl/blakeh/ocf-paper-genmon-applet/target/release/ocf-paper-genmon-applet
+Exec=@EXEC_PATH@
 Terminal=false
 Categories=COSMIC;
 Keywords=COSMIC;Iced;
