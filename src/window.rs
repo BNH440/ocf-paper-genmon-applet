@@ -10,7 +10,7 @@ use cosmic::{Action, Element, Task};
 use cosmic::widget::{list_column, settings, text, button};
 use std::time::Duration;
 
-const ID: &str = "com.example.BasicApplet";
+const ID: &str = "io.ocf.paper-genmon-applet";
 
 #[derive(Default)]
 pub struct Window {
