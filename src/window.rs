@@ -77,6 +77,7 @@ impl cosmic::Application for Window {
 
     fn view(&self) -> Element<'_, Message> {
         let content = text(&self.panel_text)
+            .size(18)
             .width(cosmic::iced::Length::Shrink);
 
         let button = button::custom(content)
