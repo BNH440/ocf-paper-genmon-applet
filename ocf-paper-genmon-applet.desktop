@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=OCF Paper Quota Applet
+Name=OCF Paper Quota
 Type=Application
 Exec=@EXEC_PATH@
 Terminal=false
